@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="2.4.0.729727472951">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="2.4.0.729728501922">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 2.4.0">
@@ -11,7 +11,7 @@
     <!-- Primary Meta Tags -->
     <title>Copoesis</title>
     <meta name="title" content="Copoesis">
-    <meta name="description" content="Copoesis" />
+    <meta name="description" content="Hashing algorithm vs memory explosion problem in the memoization of deeply recursive structures:" />
 
     <!-- Canonical -->
     <link rel="canonical" href="/cards/copoesis/copoesis/" />
@@ -20,21 +20,21 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="/cards/copoesis/copoesis/">
     <meta property="og:title" content="Copoesis">
-    <meta property="og:description" content="Copoesis">
+    <meta property="og:description" content="Hashing algorithm vs memory explosion problem in the memoization of deeply recursive structures:">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="/cards/copoesis/copoesis/">
     <meta property="twitter:title" content="Copoesis">
-    <meta property="twitter:description" content="Copoesis">
+    <meta property="twitter:description" content="Hashing algorithm vs memory explosion problem in the memoization of deeply recursive structures:">
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=2.4.0.729727472951" rel="stylesheet" />
+    <link href="../../../resources/css/retype.css?v=2.4.0.729728501922" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../../resources/js/config.js?v=2.4.0.729727472951" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../../resources/js/config.js?v=2.4.0.729728501922" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../../resources/js/retype.js?v=2.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=2.4.0.729727472951" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=2.4.0.729728501922" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -172,7 +172,79 @@
         <span>Copoesis</span>
     </h1>
 </doc-anchor-target>
-<p>Copoesis</p>
+<p>Hashing algorithm vs memory explosion problem in the memoization of deeply recursive structures:</p>
+<p>We want to transfer a picture which can contain: objects, and object-graphs (with cycles), and even pictures of pictures of pictures and so on...</p>
+<p>Inside of each of these pictures we can have many identical but necessarily unique objects.</p>
+<doc-panel id="realization">
+    <template #title>Realization</template>
+<p><strong>Javascript Sets:</strong>
+Set objects are collections of values. <strong>A value in the Set may only occur once; it is unique in the Set&#x27;s collection.</strong> You can iterate through the elements of a set in insertion order. The insertion order corresponds to the order in which each element was inserted into the set by the add() method successfully (that is, there wasn&#x27;t an identical element already in the set when add() was called).</p>
+<p>The specification requires sets to be implemented &quot;that, on average, provide access times that are sublinear on the number of elements in the collection&quot;. Therefore, it could be represented internally as a hash table (with O(1) lookup), a search tree (with O(log(N)) lookup), or any other data structure, as long as the complexity is better than O(N).</p>
+</doc-panel>
+<p>To reduce the memory-use, we can replace (all or most-commonly repeated) pure-objects and pure-pictures with their hashes and store the real objects inside of a hash-table.</p>
+<p>Sounds great! But there&#x27;s a catch: hash-collisions. Two pictures might have the same hash!</p>
+<p>To avoid this over the past 30 years cryptographers have been creating hashing algorithms where the chances of a collision are negligble.</p>
+<p>But these hashing algorithms offer this functionality at the expense of memory. Indeed even taking the hash of the letter &quot;a&quot; with SHA256 yields
+&quot;ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb&quot;</p>
+<p>This proposes a problem if we want to replace potentially everything in the picture including deeply nested pictures with hashes...</p>
+<p>A hash of a picture with hash of a picture and a hash of picture ...</p>
+<p>We can quickly see how we will begin to lose information about the hashes of pictures within our picture</p>
+<p>One hash can corrspond to:</p>
+<ul>
+<li>several possible pictures</li>
+<li>several possible recognition streams about these possible pictures</li>
+<li>several possible meanings of the hashes in these picture</li>
+</ul>
+<p>// repition of above
+If every value inside the picture is a unique (which is what the Set ensures)
+Then a hash of a picture in one picture can differ in meaning from an identical hash in another picture</p>
+<p>This also means that of all the possible pictures stored at a hash and all the possible meanings for the pictures elements stored there as well.
+These possible recognition streams could potentially point at any of these pictures!
+// end of repitition</p>
+<p>How do we know which of these possible streams is talking about which one of these pictures, if it&#x27;s only referencing a hash?
+Well the recognition streams should stream their perceptions of the positions in the array of the picture they are referencing.
+Bob could say &quot;I believe that the object you beleive I am referring to is in position 2&quot;</p>
+<p>Finding Common-ground at this level means that we can reason to find what we really mean</p>
+<p>Find those parts of the object that contain non-symbolic representations and hash/memozie those to store them at an index in the pictures array this way we can take the hash of pictures in order to give them a location without worrying that these picture hashes are &quot;dirty&quot;</p>
+<p>But how are we to approach memoizing so as to reduce the amount to information-loss that would come from taking the hash of a picture with another hash within it? Taking the hash of a picture with hashes inside of it, will likely lead to confusion as we lose our understanding of what those hashes are.</p>
+<p>So we should start with taking the hash of pictures that contain no hashes, let&#x27;s call these <strong>pure pictures</strong>.</p>
+<p>These pure pictures serve as the skeletal structure of the more unknown <strong>impure pictures</strong>, which itself serves as a backdrop that allows us to reason about and ground perceptions of possible/impossible/necessary/contingent pictures and the relations between them and their hashes.</p>
+<p>But we arrive here at another problem, were we to <strong>memoize</strong> these <strong>pure pictures</strong> and replace them with their hash, these sets of values turned hashes might find themselves scattered throughout pictures, meaning that all those that contain them are now <strong>impure pictures</strong>.</p>
+<p>Memoization procedures for finding the optimal compression between pure and impure pictures, is crucial, and indeed <strong>common ground about the picture of pure pictures can greatly reduce confusion for all</strong>.</p>
+<p>When we look at it like that, there isn&#x27;t even a need for a hashing algorithm, any convention could be adopted by which recognizers choose to attribute meaning to representations, indeed these conventions could be expressed, and those languages could be installed for dealing with precisely that level of interpretation (see AD4M). However such conventions would likely stand to benefit from being used in conjunction with hashing in order to decrease lookup-time and the necessity of grounding.</p>
+<p><strong>To Recap</strong>
+We basically want to store the picture inside the hashtable based on it&#x27;s hash
+Then we later add significations to the picture
+and when we memoize, we replace the picture with it&#x27;s hash://2f0ien02f
+which gives us an index, and then we see all the pictures that could possibly be at this hash
+we then, see along side the pictures that have this hash, all the recognitions that point
+to this hash
+and each one of the recognitions inside of this bucket comes from a recognier
+who has beliefs about which position in the bucket it&#x27;s recognition is talking about.</p>
+<p><strong>So grounding perceptions of what is being pointed at, allows for:</strong></p>
+<ul>
+<li>translating between our perceptions of reference</li>
+<li>reorganizing our pointers in a common order</li>
+<li>to reduce the need for translation</li>
+<li>this aids us in memoization of the structure</li>
+<li>and in fact reduces the pressure to avoid hash collisions!</li>
+<li>Allowing us to adopt much smaller hashes all the way the picture structure, which increases the burden on grounding but interestingly enough decreases
+the information-loss that we face when our hashes are too long in what can be deeply nested and even cyclic structures.</li>
+</ul>
+<doc-anchor-target id="membranes">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#membranes">#</doc-anchor-trigger>
+        <span>Membranes</span>
+    </h1>
+</doc-anchor-target>
+<p>The recogntion streams surrounding a picture can be stored in a membrane.</p>
+<doc-anchor-target id="categories">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#categories">#</doc-anchor-trigger>
+        <span>Categories</span>
+    </h1>
+</doc-anchor-target>
+<p>The recognition of symbols can also be interepreted as categories allowing certain transformation between morphisms</p>
 
                                 
                                 <!-- Required only on API pages -->
