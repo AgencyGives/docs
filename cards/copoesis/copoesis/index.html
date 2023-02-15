@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="2.4.0.729728501922">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="2.4.0.729808843170">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 2.4.0">
@@ -30,11 +30,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=2.4.0.729728501922" rel="stylesheet" />
+    <link href="../../../resources/css/retype.css?v=2.4.0.729808843170" rel="stylesheet" />
 
-    <script type="text/javascript" src="../../../resources/js/config.js?v=2.4.0.729728501922" data-turbo-eval="false" defer></script>
+    <script type="text/javascript" src="../../../resources/js/config.js?v=2.4.0.729808843170" data-turbo-eval="false" defer></script>
     <script type="text/javascript" src="../../../resources/js/retype.js?v=2.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=2.4.0.729728501922" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" type="text/javascript" src="../../../resources/js/lunr.js?v=2.4.0.729808843170" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -245,6 +245,15 @@ the information-loss that we face when our hashes are too long in what can be de
     </h1>
 </doc-anchor-target>
 <p>The recognition of symbols can also be interepreted as categories allowing certain transformation between morphisms</p>
+<p>In brief, set theory is about membership while category theory is about structure-preserving transformations – but only about the relationships between those transformations.</p>
+<p>Set theory is only about membership (i.e. being an element) and what can be expressed in terms of that (e.g. being a subset). It does not concern itself with any other properties of elements or sets.</p>
+<p>Category theory is a way to talk about how mathematical structures of a given type1 can be transformed into one another2 by functions that preserve some aspect of their structure; it provides a uniform language for speaking of a great range of types1 of mathematical structure (groups, automata, vector spaces, sets, topological spaces, … and even categories themselves!) and the mappings within those types1. Although it formalises the properties of mappings between structures (really: between the sets on which the structure is imposed), it only deals with abstract properties of maps and structures, calling them morphisms (or arrows) and objects; the elements of such structured sets are not the concern of category theory, and nor are the structures on those sets. You ask “what is it a theory of”; it is a theory of structure-preserving mappings of mathematical objects of an arbitrary type1.</p>
+<p>The theory of Abstract categories3, however, as just stated, totally ignores the sets, operations, relations and axioms that specify the structure of the objects in question; it just provides a language in which to talk about how mappings that do preserve some such structure behave: without knowing what structure is preserved, we know that the combination of two such maps also preserves structure. For that reason, the axioms of category theory require that there be an associative composition law on morphisms and, similarly, that there be an identity morphism from each object to itself. But it does not assume that morphisms actually are functions between sets, just that they behave like them.</p>
+<p>In Concrete categories, however, the objects really do correspond to sets and the morphisms to mappings of those sets, or they correspond to objects and morphisms of some other ‘base category’ than Set
+. Concrete categories model the idea of adding structure to the objects of the base category, although we still ignore that actual structure: we consider only the morphisms of the base category and the abstract behaviour of the morphisms of the concrete category. For example Grp, the category of groups, may be made into a concrete category (over Set</p>
+<p>), by specifying the homomorphisms as mappings of the underlying sets of the groups; however, this tells us nothing about the group multiplication operations themselves.</p>
+<p>As for the implications of your formulations, saying that “G
+is a group”, that “G is an element of the set of groups” (actually a proper class) or that “G is (an object) in Grp” (or a “Grp-object”) mean the same thing logically, but talking about the category suggests you are interested in group homomorphisms (the morphisms in Grp) and perhaps in what they have in common with other morphisms. On the other hand, saying G is a group might suggest you are interested in the structure of the group (its multiplication operation) itself or perhaps in how the group acts on some other mathematical object. You would be unlikely to talk about G belonging to the class (not really “set”) of groups, though you could easily write G∈S for some particular collection S of groups you are interested in.</p>
 
                                 
                                 <!-- Required only on API pages -->
